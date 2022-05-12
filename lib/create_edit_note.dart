@@ -116,10 +116,6 @@ class _NoteState extends State<CreateEditNote> {
             Flexible(
               child: _noteTitle(context),
             ),
-            const Divider(
-              color: Colors.black54,
-              height: 5,
-            ),
             Flexible(
               child: _noteContent(context),
             ),
@@ -134,20 +130,23 @@ class _NoteState extends State<CreateEditNote> {
   Widget _noteTitle(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: EditableText(
+      child: TextField(
         onChanged: (str) {
-          str.length < 40? _title = str : str.substring(0,40);
+          _title = str;
         },
+        decoration: const InputDecoration(
+          hintText: 'Type title...',
+        ),
         autofocus: true,
+        maxLength: 50,
         style: const TextStyle(
           color: Color.fromARGB(255, 55, 48, 160),
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
         cursorColor: const Color.fromARGB(255, 55, 48, 160),
-        backgroundCursorColor: const Color.fromARGB(255, 88, 80, 79),
         controller: TextEditingController(
-            text: noteId == 0 && !isSetColor ? 'Type something...' : _title),
+            text: noteId == 0 && !isSetColor ? '' : _title),
         focusNode: FocusNode(),
       ),
     );
@@ -156,20 +155,23 @@ class _NoteState extends State<CreateEditNote> {
   Widget _noteContent(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: EditableText(
+      child: TextField(
         onChanged: (str) {
           _content = str;
         },
-        maxLines: 50, // line limit extendable later
+        decoration: const InputDecoration(
+          hintText: 'Type content...',
+        ),
+        keyboardType: TextInputType.multiline,
+        maxLines: 10,// line limit extendable later
         controller: TextEditingController(
-            text: noteId == 0 && !isSetColor ? 'Type something...' : _content),
+            text: noteId == 0 && !isSetColor ? '' : _content),
         focusNode: FocusNode(),
         style: const TextStyle(
           color: Color.fromARGB(255, 88, 80, 79),
           fontSize: 15,
           fontWeight: FontWeight.w800,
         ),
-        backgroundCursorColor: const Color.fromARGB(255, 88, 80, 79),
         cursorColor: const Color.fromARGB(255, 6, 47, 80),
       ),
     );

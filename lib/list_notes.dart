@@ -38,7 +38,7 @@ class _NotesListState extends State<NotesList> {
                 //the left color of the container, represents the note color
                 left: BorderSide(
                   color: notes[index].getColor,
-                  width: 3,
+                  width: 5,
                 ),
               ),
               boxShadow: [
@@ -73,9 +73,9 @@ class _NotesListState extends State<NotesList> {
                   //note content, gets the first 35 characters of the note content
                   notes[index].getContent.substring(
                       0,
-                      notes[index].getContent.length > 35//even do not occur error
-                          ? 35
-                          : notes[index].getContent.length),
+                      notes[index].getContent.length > 45//even do not occur error
+                          ? 45
+                          : notes[index].getContent.length).split('\n').join(' ') + '...',
                   style: TextStyle(
                     color: _contentColor,
                     fontSize: 15,
