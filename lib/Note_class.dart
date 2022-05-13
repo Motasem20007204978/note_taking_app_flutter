@@ -1,24 +1,52 @@
 // ignore_for_file: file_names, curly_braces_in_flow_control_structures
 
-import 'package:flutter/cupertino.dart' show Color;
-import 'package:flutter/material.dart';
+import 'note_db.dart';
 
 class NoteClass {
   //private instances
   int _id = 0;
   String _title = '';
   String _content = '';
-  Color _color = const Color.fromARGB(255, 28, 29, 204);
-  DateTime _date = DateTime.now();
+  int _color = 0;
+  String _date = '';
   static int lastId = 0;
 
   static List<NoteClass> notes = [];
+  static bool isFilledList = false;
 
-  NoteClass(this._title, this._content, this._color) {
-    _date = DateTime.now();
+  NoteClass(this._title, this._content, this._color, this._date) {
     lastId += 1;
     _id = lastId;
     notes.add(this);
+    _insert(getId, getTitle, getContent, getColor, _date);
+    print(_id);
+  }
+
+  NoteClass.fill(
+      this._id, this._title, this._content, this._color, this._date) {
+    notes.add(this);
+    lastId += 1;
+  }
+
+  _insert(int id, String title, String content, int color, String date) async {
+    String sqlQuery =
+        "insert into notes ('id', 'title', 'content', 'color', 'edit_date')" +
+            "values ($id, $title, $content, $color, $date)";
+    int response = await NoteDB().insertData(sqlQuery);
+    print(response);
+  }
+
+  static fillListFromDB() async {
+    if (!isFilledList) {
+      //singleton pattern
+      isFilledList = true;
+      String sqlQuery = "select * from notes";
+      List<Map> data = await NoteDB().readData(sqlQuery);
+      for (Map raw in data) {
+        NoteClass.fill(raw['id'], raw['title'], raw['content'], raw['color'],
+            raw['edit_date']);
+      }
+    }
   }
 
   int get getId => _id;
@@ -30,11 +58,11 @@ class NoteClass {
   String get getContent => _content;
   set setContent(String content) => _content = content;
 
-  Color get getColor => _color;
-  set setColor(Color color) => _color = color;
+  int get getColor => _color;
+  set setColor(int color) => _color = color;
 
-  DateTime get getDate => _date;
-  set setDate(DateTime date) => _date = date;
+  String get getDate => _date;
+  set setDate(String date) => _date = date;
 
   static NoteClass? getNoteById(int? id) {
     for (NoteClass note in notes) if (note.getId == id) return note;

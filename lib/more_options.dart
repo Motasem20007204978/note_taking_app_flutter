@@ -36,7 +36,7 @@ class _MoreOptionsState extends State<MoreOptions> {
   Widget build(BuildContext context) {
     var note = NoteClass.getNoteById(noteId);
     return Container(
-      color: noteId == 0 || isSetColor ? noteColor : note!.getColor,
+      color: noteId == 0 || isSetColor ? noteColor : Color(note!.getColor),
       padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
       child: Wrap(
         children: <Widget>[
@@ -67,7 +67,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                 if (noteId != 0) {
                   //if it was already added note, it can be duplicated
                   //duplicate by adding second copy
-                  NoteClass(note!.getTitle, note.getContent, note.getColor);
+                  NoteClass(note!.getTitle, note.getContent, note.getColor, note.getDate);
                   _toHomePage(context);
                 }
               }),

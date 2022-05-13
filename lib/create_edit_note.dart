@@ -18,7 +18,7 @@ class _NoteState extends State<CreateEditNote> {
   int? noteId;
   String _title = '';
   String _content = '';
-  DateTime _dateTime = DateTime.now();
+  String _dateTime = '';
   Color _noteColor = const Color.fromARGB(255, 28, 29, 204);
 
   _NoteState(this.noteId); //recieves 0 to create new note or note id to edit
@@ -26,18 +26,23 @@ class _NoteState extends State<CreateEditNote> {
   void _saveNote() {
     //when pressing the save icon
     setState(() {
+      String color = _noteColor.toString();
+      color = color.substring(6, color.length - 1); //hex code
+      var dateTime = DateTime.now();
+      String formattedDate = DateFormat('EEE MMM,dd kk:mm:ss').format(dateTime);
       if (noteId == 0) {
         //gives the new note an id by increasing the last id by 1
-        noteId = NoteClass.lastId + 1;
-        NoteClass(_title, _content, _noteColor); //add new note
+        //noteId = NoteClass.lastId + 1
+        NoteClass(
+            _title, _content, int.parse(color), formattedDate); //add new note
       } else {
         var note =
             NoteClass.getNoteById(noteId)!; //get the note that has thid id
         //edit its content
         note.setTitle = _title;
-        note.setColor = _noteColor;
+        note.setColor = int.parse(color);
         note.setContent = _content;
-        note.setDate = DateTime.now();
+        note.setDate = formattedDate;
       }
       //after changes navigates to the home page
       Navigator.push(
@@ -67,7 +72,7 @@ class _NoteState extends State<CreateEditNote> {
       var note = NoteClass.getNoteById(noteId)!;
       _title = note.getTitle;
       _content = note.getContent;
-      _noteColor = note.getColor;
+      _noteColor = Color(note.getColor);
       _dateTime = note.getDate;
     }
 
@@ -189,7 +194,7 @@ class _NoteState extends State<CreateEditNote> {
     );
   }
 
-  Widget _lastEditDate(BuildContext context, DateTime _dateTime) {
+  Widget _lastEditDate(BuildContext context, String _dateTime) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -202,10 +207,7 @@ class _NoteState extends State<CreateEditNote> {
           ),
         ),
         Text(
-          'date: ' +
-              DateFormat.MMMEd().format(_dateTime).toString() +
-              ', time: ' +
-              DateFormat.Hms().format(_dateTime).toString(),
+          _dateTime,
           style: const TextStyle(
             color: Colors.red,
             fontSize: 17,

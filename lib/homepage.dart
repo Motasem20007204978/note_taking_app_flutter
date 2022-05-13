@@ -8,6 +8,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NoteClass.fillListFromDB();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -18,14 +19,15 @@ class HomePage extends StatelessWidget {
       ),
       body: NoteClass.notes.isEmpty ? const EmptyNote() : const NotesList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {//navigate to create new note page
+        onPressed: () {
+          //navigate to create new note page
           Navigator.push(
             context,
             //passes 0 to make new page note
             MaterialPageRoute(builder: (context) => CreateEditNote(0)),
           );
         },
-        tooltip: 'create note',//description when hover the wedgit
+        tooltip: 'create note', //description when hover the wedgit
         child: const Icon(
           Icons.add,
           size: 40,

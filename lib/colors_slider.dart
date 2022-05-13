@@ -35,14 +35,15 @@ class _ColorSliderState extends State<ColorSlider> {
   ];
 
   Color? noteColor;
-  int? indexOfCurrentColor;//to check on the new selected color
+  int? indexOfCurrentColor; //to check on the new selected color
 
   @override
   void initState() {
     var note = NoteClass.getNoteById(noteId);
     super.initState();
-    noteColor =
-        noteId == 0 ? const Color.fromARGB(255, 28, 29, 204) : note!.getColor;
+    noteColor = noteId == 0
+        ? const Color.fromARGB(255, 28, 29, 204)
+        : Color(note!.getColor);
     indexOfCurrentColor = colors.indexOf(noteColor!);
   }
 
@@ -62,7 +63,8 @@ class _ColorSliderState extends State<ColorSlider> {
           child: Padding(
             padding: const EdgeInsets.only(left: 6, right: 6),
             child: Container(
-              child: CircleAvatar(//check selected color here
+              child: CircleAvatar(
+                //check selected color here
                 child: indexOfCurrentColor == index
                     ? const Icon(Icons.check)
                     : null,

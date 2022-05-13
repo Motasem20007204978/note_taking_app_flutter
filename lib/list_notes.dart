@@ -37,7 +37,7 @@ class _NotesListState extends State<NotesList> {
               border: Border(
                 //the left color of the container, represents the note color
                 left: BorderSide(
-                  color: notes[index].getColor,
+                  color: Color(notes[index].getColor),
                   width: 5,
                 ),
               ),
