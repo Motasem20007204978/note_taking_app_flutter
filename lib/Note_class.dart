@@ -9,13 +9,13 @@ class NoteClass {
   String _title = '';
   String _content = '';
   Color _color = const Color.fromARGB(255, 28, 29, 204);
-  //DateTime? _date;
+  DateTime _date = DateTime.now();
   static int lastId = 0;
 
   static List<NoteClass> notes = [];
 
   NoteClass(this._title, this._content, this._color) {
-    // _date = DateTime.now();
+    _date = DateTime.now();
     lastId += 1;
     _id = lastId;
     notes.add(this);
@@ -33,8 +33,8 @@ class NoteClass {
   Color get getColor => _color;
   set setColor(Color color) => _color = color;
 
-  // DateTime? get getDate => _date;
-  // set setDate(DateTime date) => _date = date;
+  DateTime get getDate => _date;
+  set setDate(DateTime date) => _date = date;
 
   static NoteClass? getNoteById(int? id) {
     for (NoteClass note in notes) if (note.getId == id) return note;

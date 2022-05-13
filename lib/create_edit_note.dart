@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'Note_class.dart';
@@ -17,22 +18,26 @@ class _NoteState extends State<CreateEditNote> {
   int? noteId;
   String _title = '';
   String _content = '';
+  DateTime _dateTime = DateTime.now();
   Color _noteColor = const Color.fromARGB(255, 28, 29, 204);
 
-  _NoteState(this.noteId);//recieves 0 to create new note or note id to edit
+  _NoteState(this.noteId); //recieves 0 to create new note or note id to edit
 
-  void _saveNote() {//when pressing the save icon
+  void _saveNote() {
+    //when pressing the save icon
     setState(() {
       if (noteId == 0) {
         //gives the new note an id by increasing the last id by 1
         noteId = NoteClass.lastId + 1;
-        NoteClass(_title, _content, _noteColor);//add new note
+        NoteClass(_title, _content, _noteColor); //add new note
       } else {
-        var note = NoteClass.getNoteById(noteId)!;//get the note that has thid id
+        var note =
+            NoteClass.getNoteById(noteId)!; //get the note that has thid id
         //edit its content
         note.setTitle = _title;
         note.setColor = _noteColor;
         note.setContent = _content;
+        note.setDate = DateTime.now();
       }
       //after changes navigates to the home page
       Navigator.push(
@@ -42,14 +47,15 @@ class _NoteState extends State<CreateEditNote> {
     });
   }
 
-  bool isSetColor = false;//to keep set color
+  bool isSetColor = false; //to keep set color
 
-  void setColor(Color color) {//when choosing color from color slider
+  void setColor(Color color) {
+    //when choosing color from color slider
     setState(() {
-      _noteColor = color;//chanage note color
+      _noteColor = color; //chanage note color
       isSetColor = true;
       //to keep changes of title and content if we change them befor choosing color
-      //and before saving them, 
+      //and before saving them,
       //because choosing color may refill the field with default values
     });
   }
@@ -62,6 +68,7 @@ class _NoteState extends State<CreateEditNote> {
       _title = note.getTitle;
       _content = note.getContent;
       _noteColor = note.getColor;
+      _dateTime = note.getDate;
     }
 
     //print('note id is $noteId');
@@ -82,7 +89,8 @@ class _NoteState extends State<CreateEditNote> {
         Padding(
           padding: const EdgeInsets.only(right: 20),
           child: GestureDetector(
-            onTap: () {//to show more options(delete, duplicate, share, color)
+            onTap: () {
+              //to show more options(delete, duplicate, share, color)
               showModalBottomSheet(
                 context: context,
                 builder: (BuildContext context) =>
@@ -95,7 +103,8 @@ class _NoteState extends State<CreateEditNote> {
         Padding(
           padding: const EdgeInsets.only(right: 20),
           child: GestureDetector(
-            onTap: () async {//to save chanes, either add new note or edit it
+            onTap: () async {
+              //to save chanes, either add new note or edit it
               if (_title.isNotEmpty || _content.isNotEmpty) {
                 _saveNote();
               }
@@ -119,6 +128,8 @@ class _NoteState extends State<CreateEditNote> {
             Flexible(
               child: _noteContent(context),
             ),
+            const SizedBox(height: 20),
+            noteId == 0 ? Container() : _lastEditDate(context, _dateTime),
           ],
         ),
         top: false, //to allow system intrusion
@@ -136,6 +147,7 @@ class _NoteState extends State<CreateEditNote> {
         },
         decoration: const InputDecoration(
           hintText: 'Type title...',
+          counter: SizedBox.shrink(),
         ),
         autofocus: true,
         maxLength: 50,
@@ -163,7 +175,7 @@ class _NoteState extends State<CreateEditNote> {
           hintText: 'Type content...',
         ),
         keyboardType: TextInputType.multiline,
-        maxLines: 10,// line limit extendable later
+        maxLines: 10, // line limit extendable later
         controller: TextEditingController(
             text: noteId == 0 && !isSetColor ? '' : _content),
         focusNode: FocusNode(),
@@ -174,6 +186,32 @@ class _NoteState extends State<CreateEditNote> {
         ),
         cursorColor: const Color.fromARGB(255, 6, 47, 80),
       ),
+    );
+  }
+
+  Widget _lastEditDate(BuildContext context, DateTime _dateTime) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'last edit at ',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        Text(
+          'date: ' +
+              DateFormat.MMMEd().format(_dateTime).toString() +
+              ', time: ' +
+              DateFormat.Hms().format(_dateTime).toString(),
+          style: const TextStyle(
+            color: Colors.red,
+            fontSize: 17,
+          ),
+        ),
+      ],
     );
   }
 }
