@@ -18,7 +18,8 @@ class NoteDB {
   _initDB() async {
     //create data base
     print('creating database');
-    Database noteDB = await openDatabase('notes.db',
+    String path = join(await getDatabasesPath(), 'motes_database.db');
+    Database noteDB = await openDatabase(path,
         onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
     return noteDB;
   }
