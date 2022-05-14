@@ -17,10 +17,8 @@ class NoteDB {
 
   _initDB() async {
     //create data base
-    String databasePath =
-        await getDatabasesPath(); //default path in the platform
-    String path = join(databasePath, 'note.db'); //database name
-    Database noteDB = await openDatabase(path,
+    print('creating database');
+    Database noteDB = await openDatabase('notes.db',
         onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
     return noteDB;
   }
@@ -43,7 +41,7 @@ class NoteDB {
     //e.g. when adding a new table
   }
 
-  Future<List<Map>> readData(String sql) async {
+  readData(String sql) async {
     Database? noteDB = await dataBase;
     var response = await noteDB!.rawQuery(sql);
     return response;

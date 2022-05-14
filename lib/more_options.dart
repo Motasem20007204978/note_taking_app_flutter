@@ -54,6 +54,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                 if (noteId != 0) {
                   //if it is a new note, cannot be deleted
                   NoteClass.notes.remove(note!);
+                  NoteClass.deleteNoteFromDB(noteId!);
                   _toHomePage(context);
                 }
               }),
@@ -67,7 +68,8 @@ class _MoreOptionsState extends State<MoreOptions> {
                 if (noteId != 0) {
                   //if it was already added note, it can be duplicated
                   //duplicate by adding second copy
-                  NoteClass(note!.getTitle, note.getContent, note.getColor, note.getDate);
+                  NoteClass(note!.getTitle, note.getContent, note.getColor,
+                      note.getDate);
                   _toHomePage(context);
                 }
               }),

@@ -43,6 +43,8 @@ class _NoteState extends State<CreateEditNote> {
         note.setColor = int.parse(color);
         note.setContent = _content;
         note.setDate = formattedDate;
+        NoteClass.updateNoteInDB(noteId!, note.getTitle, note.getContent,
+            note.getColor, note.getDate);
       }
       //after changes navigates to the home page
       Navigator.push(
