@@ -27,7 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  # floor: ^1.2.0
+  path_provider: ^2.0.10
   intl: ^0.17.0
   sqflite: ^2.0.1
   share: any #share with accounts
@@ -40,8 +40,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
-  # floor_generator: ^1.2.0
-  # build_runner: ^2.1.2
   flutter_test:
     sdk: flutter
 
