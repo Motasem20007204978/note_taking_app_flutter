@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
+// import 'package:flutter/widgets.dart';
 
 class NoteDB {
   static Database? _db;
@@ -14,9 +15,9 @@ class NoteDB {
   Future<Database?> _initDB() async {
     //create data base
     print('creating database');
-    var dbPath = await getApplicationDocumentsDirectory();
-    print(dbPath.path);
-    String path = join(dbPath.path, 'motes_database.db');
+    String dbPath = await getDatabasesPath();
+    print(dbPath);
+    String path = join(dbPath, 'motes_database.db');
     Database noteDB = await openDatabase(path,
         onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
     return noteDB;
