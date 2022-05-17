@@ -5,22 +5,18 @@ import 'package:path_provider/path_provider.dart';
 class NoteDB {
   static Database? _db;
 
-  NoteDB();
-
   Future<Database?> get dataBase async {
     //singleton pattern
-    if (_db == null) {
-      _db = await _initDB();
-      return _db;
-    }
+    _db ??= await _initDB();
     return _db;
   }
 
-  _initDB() async {
+  Future<Database?> _initDB() async {
     //create data base
     print('creating database');
-    var dbFolder = await getApplicationDocumentsDirectory();
-    String path = join(dbFolder.path, 'motes_database.db');
+    var dbPath = await getApplicationDocumentsDirectory();
+    print(dbPath.path);
+    String path = join(dbPath.path, 'motes_database.db');
     Database noteDB = await openDatabase(path,
         onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
     return noteDB;
@@ -39,30 +35,30 @@ class NoteDB {
       ''');
   }
 
-  _onUpgrade(Database db, int oldVersion, int newVersion) {
+  _onUpgrade(Database db, int oldVersion, int newVersion) async {
     //called when changing version to uograde data base
     //e.g. when adding a new table
   }
 
-  readData(String sql) async {
+  Future<List<Map>> readData(String sql) async {
     Database? noteDB = await dataBase;
-    var response = await noteDB!.rawQuery(sql);
+    List<Map> response = await noteDB!.rawQuery(sql);
     return response;
   }
 
-  insertData(String sql) async {
+  Future<int> insertData(String sql) async {
     Database? noteDB = await dataBase;
     int response = await noteDB!.rawInsert(sql);
     return response;
   }
 
-  deleteData(String sql) async {
+  Future<int> deleteData(String sql) async {
     Database? noteDB = await dataBase;
     int response = await noteDB!.rawDelete(sql);
     return response;
   }
 
-  updateData(String sql) async {
+  Future<int> updateData(String sql) async {
     Database? noteDB = await dataBase;
     int response = await noteDB!.rawUpdate(sql);
     return response;

@@ -28,40 +28,44 @@ class NoteClass {
     lastId += 1;
   }
 
-  _insert(int id, String title, String content, int color, String date) async {
+  Future<int> _insert(
+      int id, String title, String content, int color, String date) async {
     String sqlQuery =
         '''insert into notes ('id', 'title', 'content', 'color', 'edit_date') 
             values ($id, $title, $content, $color, $date)''';
     int response = await NoteDB().insertData(sqlQuery);
     print(response);
+    return response;
   }
 
-  static fillListFromDB() async {
+  static Future<List> fillListFromDB() async {
+    String sqlQuery = "select * from notes";
+    List<Map> data = await NoteDB().readData(sqlQuery);
     if (!isFilledList) {
       //singleton pattern
       isFilledList = true;
-      String sqlQuery = "select * from notes";
-      List<Map> data = await NoteDB().readData(sqlQuery);
       print(data.isEmpty);
       for (Map raw in data) {
         NoteClass.fill(raw['id'], raw['title'], raw['content'], raw['color'],
             raw['edit_date']);
       }
     }
+    return data;
   }
 
-  static deleteNoteFromDB(int id) async {
+  static Future<int> deleteNoteFromDB(int id) async {
     String sqlQuery = 'DELETE FROM "notes" WHERE id = $id';
     int response = await NoteDB().deleteData(sqlQuery);
     return response;
   }
 
-  static updateNoteInDB(
+  static Future<int> updateNoteInDB(
       int id, String title, String content, int color, String date) async {
     String sqlQuery =
         '''UPDATE 'notes' SET 'title' = $title, 'content' = $content, 
           'color' = $color, 'edit_date' = $date WHERE id = $id ''';
     int response = await NoteDB().updateData(sqlQuery);
+    return response;
   }
 
   int get getId => _id;
