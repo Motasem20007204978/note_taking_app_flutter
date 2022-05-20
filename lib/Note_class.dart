@@ -1,6 +1,5 @@
-// ignore_for_file: file_names, curly_braces_in_flow_control_structures
-
-import 'note_db.dart';
+// ignore: file_names
+import 'note_db.dart' show NoteDB;
 
 class NoteClass {
   //private instances
@@ -33,14 +32,14 @@ class NoteClass {
     String sqlQuery =
         '''insert into notes ('id', 'title', 'content', 'color', 'edit_date') 
             values ($id, $title, $content, $color, $date)''';
-    int response = await NoteDB().insertData(sqlQuery);
+    int response = await NoteDB.insertData(sqlQuery);
     print(response);
     return response;
   }
 
   static Future<List> fillListFromDB() async {
     String sqlQuery = "select * from notes";
-    List<Map> data = await NoteDB().readData(sqlQuery);
+    List<Map> data = await NoteDB.readData(sqlQuery);
     if (!isFilledList) {
       //singleton pattern
       isFilledList = true;
@@ -55,7 +54,7 @@ class NoteClass {
 
   static Future<int> deleteNoteFromDB(int id) async {
     String sqlQuery = 'DELETE FROM "notes" WHERE id = $id';
-    int response = await NoteDB().deleteData(sqlQuery);
+    int response = await NoteDB.deleteData(sqlQuery);
     return response;
   }
 
@@ -64,7 +63,7 @@ class NoteClass {
     String sqlQuery =
         '''UPDATE 'notes' SET 'title' = $title, 'content' = $content, 
           'color' = $color, 'edit_date' = $date WHERE id = $id ''';
-    int response = await NoteDB().updateData(sqlQuery);
+    int response = await NoteDB.updateData(sqlQuery);
     return response;
   }
 
@@ -84,7 +83,9 @@ class NoteClass {
   set setDate(String date) => _date = date;
 
   static NoteClass? getNoteById(int? id) {
-    for (NoteClass note in notes) if (note.getId == id) return note;
+    for (NoteClass note in notes) {
+      if (note.getId == id) return note;
+    }
     return null;
   }
 }

@@ -27,11 +27,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  path_provider: any 
   intl: any
   sqflite: any
-  path: any
-  share: any #share with accounts
   flutter:
     sdk: flutter
 

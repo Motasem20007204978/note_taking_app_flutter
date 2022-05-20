@@ -1,29 +1,25 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'package:flutter/widgets.dart';
 
 class NoteDB {
   static Database? _db;
 
-  Future<Database?> get dataBase async {
+  NoteDB._();
+
+  static Future<Database?> get dataBase async {
     //singleton pattern
     _db ??= await _initDB();
     return _db;
   }
 
-  Future<Database?> _initDB() async {
+  static Future<Database?> _initDB() async {
     //create data base
-    print('creating database');
-    String dbPath = await getDatabasesPath();
-    print(dbPath);
-    String path = join(dbPath, 'motes_database.db');
-    Database noteDB = await openDatabase(path,
+    print('creating database...');
+    Database noteDB = await openDatabase('motes.db',
         onCreate: _onCreate, version: 1, onUpgrade: _onUpgrade);
     return noteDB;
   }
 
-  _onCreate(Database db, int version) async {
+  static Future<void> _onCreate(Database db, int version) async {
     //called when creating database
     await db.execute('''
     CREATE TABLE "notes"(
@@ -36,31 +32,32 @@ class NoteDB {
       ''');
   }
 
-  _onUpgrade(Database db, int oldVersion, int newVersion) async {
+  static Future<void> _onUpgrade(
+      Database db, int oldVersion, int newVersion) async {
     //called when changing version to uograde data base
     //e.g. when adding a new table
   }
 
-  Future<List<Map>> readData(String sql) async {
-    Database? noteDB = await dataBase;
+  static Future<List<Map>> readData(String sql) async {
+    Database? noteDB = await NoteDB.dataBase;
     List<Map> response = await noteDB!.rawQuery(sql);
     return response;
   }
 
-  Future<int> insertData(String sql) async {
-    Database? noteDB = await dataBase;
+  static Future<int> insertData(String sql) async {
+    Database? noteDB = await NoteDB.dataBase;
     int response = await noteDB!.rawInsert(sql);
     return response;
   }
 
-  Future<int> deleteData(String sql) async {
-    Database? noteDB = await dataBase;
+  static Future<int> deleteData(String sql) async {
+    Database? noteDB = await NoteDB.dataBase;
     int response = await noteDB!.rawDelete(sql);
     return response;
   }
 
-  Future<int> updateData(String sql) async {
-    Database? noteDB = await dataBase;
+  static Future<int> updateData(String sql) async {
+    Database? noteDB = await NoteDB.dataBase;
     int response = await noteDB!.rawUpdate(sql);
     return response;
   }
