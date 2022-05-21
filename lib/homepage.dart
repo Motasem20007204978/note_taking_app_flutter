@@ -8,7 +8,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NoteClass.fillListFromDB();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

@@ -1,7 +1,10 @@
 import 'homepage.dart';
 import 'package:flutter/material.dart';
+import 'Note_class.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NoteClass.fillListFromDB();
   runApp(const MyApp());
 }
 
