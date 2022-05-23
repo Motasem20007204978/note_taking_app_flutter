@@ -54,7 +54,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                 if (noteId != 0) {
                   //if it is a new note, cannot be deleted
                   NoteClass.notes.remove(note!);
-                  NoteClass.deleteNoteFromDB(noteId!);
+                  NoteClass.deleteNoteFromDB(note.getId);
                   _toHomePage(context);
                 }
               }),

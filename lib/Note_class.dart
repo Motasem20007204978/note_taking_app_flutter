@@ -4,10 +4,10 @@ import 'note_db.dart' show NoteDB;
 class NoteClass {
   //private instances
   int _id = 0;
-  String _title = '';
-  String _content = '';
+  String _title = "";
+  String _content = "";
   int _color = 0;
-  String _date = '';
+  String _date = "";
   static int lastId = 0;
 
   static List<NoteClass> notes = [];
@@ -17,7 +17,7 @@ class NoteClass {
     lastId += 1;
     _id = lastId;
     notes.add(this);
-    _insert(getId, getTitle, getContent, getColor, _date);
+    _insert(this);
     print(_id);
   }
 
@@ -27,12 +27,15 @@ class NoteClass {
     lastId += 1;
   }
 
-  Future<int> _insert(
-      int id, String title, String content, int color, String date) async {
-    String sqlQuery =
-        '''insert into notes ('id', 'title', 'content', 'color', 'edit_date') 
-            values ($id, $title, $content, $color, $date)''';
-    int response = await NoteDB.insertData(sqlQuery);
+  Future<int> _insert(NoteClass note) async {
+    Map<String, dynamic> raw = {
+      "id": note.getId,
+      "title": note.getTitle,
+      "content": note.getContent,
+      "color": note.getColor,
+      "edit_date": note.getDate
+    };
+    int response = await NoteDB.insertData(raw);
     print(response);
     return response;
   }
@@ -53,17 +56,19 @@ class NoteClass {
   }
 
   static Future<int> deleteNoteFromDB(int id) async {
-    String sqlQuery = 'DELETE FROM "notes" WHERE id = $id';
+    String sqlQuery = "DELETE FROM 'notes' WHERE id = $id";
     int response = await NoteDB.deleteData(sqlQuery);
     return response;
   }
 
-  static Future<int> updateNoteInDB(
-      int id, String title, String content, int color, String date) async {
-    String sqlQuery =
-        '''UPDATE 'notes' SET 'title' = $title, 'content' = $content, 
-          'color' = $color, 'edit_date' = $date WHERE id = $id ''';
-    int response = await NoteDB.updateData(sqlQuery);
+  static Future<int> updateNoteInDB(NoteClass note) async {
+    Map<String, dynamic> raw = {
+      "title": note.getTitle,
+      "content": note.getContent,
+      "color": note.getColor,
+      "edit_date": note.getDate
+    };
+    int response = await NoteDB.updateData(note.getId, raw);
     return response;
   }
 

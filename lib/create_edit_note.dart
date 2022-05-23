@@ -16,9 +16,9 @@ class CreateEditNote extends StatefulWidget {
 
 class _NoteState extends State<CreateEditNote> {
   int? noteId;
-  String _title = '';
-  String _content = '';
-  String _dateTime = '';
+  String _title = "";
+  String _content = "";
+  String _dateTime = "";
   Color _noteColor = const Color.fromARGB(255, 28, 29, 204);
 
   _NoteState(this.noteId); //recieves 0 to create new note or note id to edit
@@ -29,10 +29,8 @@ class _NoteState extends State<CreateEditNote> {
       String color = _noteColor.toString();
       color = color.substring(6, color.length - 1); //hex code
       var dateTime = DateTime.now();
-      String formattedDate = DateFormat('EEE MMM,dd kk:mm:ss').format(dateTime);
+      String formattedDate = DateFormat('EEE MMM dd kk:mm:ss').format(dateTime);
       if (noteId == 0) {
-        //gives the new note an id by increasing the last id by 1
-        //noteId = NoteClass.lastId + 1
         NoteClass(
             _title, _content, int.parse(color), formattedDate); //add new note
       } else {
@@ -43,8 +41,7 @@ class _NoteState extends State<CreateEditNote> {
         note.setColor = int.parse(color);
         note.setContent = _content;
         note.setDate = formattedDate;
-        NoteClass.updateNoteInDB(noteId!, note.getTitle, note.getContent,
-            note.getColor, note.getDate);
+        NoteClass.updateNoteInDB(note);
       }
       //after changes navigates to the home page
       Navigator.push(
