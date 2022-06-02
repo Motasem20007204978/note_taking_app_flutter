@@ -34,7 +34,7 @@ class GetStartedPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //logo image
-            Image.asset('images/note.png'),
+            Image.asset('images/note.PNG'),
             const SizedBox(
               height: 100,
             ),
